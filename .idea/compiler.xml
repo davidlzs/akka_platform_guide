@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="shopping-analytics-service" target="11" />
+      <module name="shopping-cart-service" target="11" />
+      <module name="shopping-order-service" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="shopping-analytics-service" options="-Xlint:unchecked -Xlint:deprecation -parameters" />
+      <module name="shopping-cart-service" options="-Xlint:unchecked -Xlint:deprecation -parameters" />
+      <module name="shopping-load-test" options="" />
+      <module name="shopping-order-service" options="-Xlint:unchecked -Xlint:deprecation -parameters" />
+    </option>
+  </component>
+</project>

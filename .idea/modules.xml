@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/akka_platform_guide.iml" filepath="$PROJECT_DIR$/.idea/akka_platform_guide.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gatling-grpc-sbt-demo/.idea/modules/gatling-grpc-sbt-demo.iml" filepath="$PROJECT_DIR$/gatling-grpc-sbt-demo/.idea/modules/gatling-grpc-sbt-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gatling-grpc-sbt-demo/.idea/modules/gatling-grpc-sbt-demo-build.iml" filepath="$PROJECT_DIR$/gatling-grpc-sbt-demo/.idea/modules/gatling-grpc-sbt-demo-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shopping-analytics-service/shopping-analytics-service.iml" filepath="$PROJECT_DIR$/shopping-analytics-service/shopping-analytics-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shopping-cart-service/shopping-cart-service.iml" filepath="$PROJECT_DIR$/shopping-cart-service/shopping-cart-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shopping-load-test/.idea/modules/shopping-load-test.iml" filepath="$PROJECT_DIR$/shopping-load-test/.idea/modules/shopping-load-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shopping-load-test/.idea/modules/shopping-load-test-build.iml" filepath="$PROJECT_DIR$/shopping-load-test/.idea/modules/shopping-load-test-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shopping-order-service/shopping-order-service.iml" filepath="$PROJECT_DIR$/shopping-order-service/shopping-order-service.iml" />
+    </modules>
+  </component>
+</project>
