@@ -52,10 +52,10 @@ public class IntegrationTest {
   }
 
   private static Config nodeConfig(
-      int grcpPort, List<Integer> managementPorts, int managementPortIndex) {
+      int grpcPort, List<Integer> managementPorts, int managementPortIndex) {
     return ConfigFactory.parseString(
         "shopping-cart-service.grpc.port = "
-            + grcpPort
+            + grpcPort
             + "\n"
             + "akka.management.http.port = "
             + managementPorts.get(managementPortIndex)
@@ -80,15 +80,15 @@ public class IntegrationTest {
     private final GrpcClientSettings clientSettings;
     private shopping.cart.proto.ShoppingCartServiceClient client = null;
 
-    public TestNodeFixture(int grcpPort, List<Integer> managementPorts, int managementPortIndex) {
+    public TestNodeFixture(int grpcPort, List<Integer> managementPorts, int managementPortIndex) {
       testKit =
           ActorTestKit.create(
               "IntegrationTest",
-              nodeConfig(grcpPort, managementPorts, managementPortIndex)
+              nodeConfig(grpcPort, managementPorts, managementPortIndex)
                   .withFallback(sharedConfig()));
       system = testKit.system();
       clientSettings =
-          GrpcClientSettings.connectToServiceAt("127.0.0.1", grcpPort, system).withTls(false);
+          GrpcClientSettings.connectToServiceAt("127.0.0.1", grpcPort, system).withTls(false);
     }
 
     public shopping.cart.proto.ShoppingCartService getClient() {
