@@ -2,6 +2,7 @@ package shopping.cart;
 
 import akka.actor.typed.ActorSystem;
 import akka.actor.typed.DispatcherSelector;
+import akka.actor.typed.pubsub.Topic;
 import akka.cluster.sharding.typed.javadsl.ClusterSharding;
 import akka.cluster.sharding.typed.javadsl.EntityRef;
 import akka.grpc.GrpcServiceException;
@@ -47,6 +48,7 @@ public final class ShoppingCartServiceImpl implements ShoppingCartService {
   @Override
   public CompletionStage<Cart> addItem(AddItemRequest in) {
     logger.info("addItem {} to cart {}", in.getItemId(), in.getCartId());
+    Main.adminTopic.tell(Topic.publish(new Message("AddItem " + in.getItemId() + " to cart " + in.getCartId())));
     EntityRef<ShoppingCart.Command> entityRef =
         sharding.entityRefFor(ShoppingCart.ENTITY_KEY, in.getCartId());
     CompletionStage<ShoppingCart.Summary> reply =

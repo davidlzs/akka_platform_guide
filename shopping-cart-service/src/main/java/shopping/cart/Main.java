@@ -1,10 +1,12 @@
 package shopping.cart;
 
+import akka.actor.typed.ActorRef;
 import akka.actor.typed.ActorSystem;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.SpawnProtocol;
 import akka.actor.typed.javadsl.Behaviors;
-
+import akka.actor.typed.pubsub.Topic;
 import akka.grpc.GrpcClientSettings;
-
 import akka.management.cluster.bootstrap.ClusterBootstrap;
 import akka.management.javadsl.AkkaManagement;
 import com.typesafe.config.Config;
@@ -15,18 +17,21 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import shopping.cart.proto.ShoppingCartService;
 import shopping.cart.repository.ItemPopularityRepository;
 import shopping.cart.repository.SpringIntegration;
-
 import shopping.order.proto.ShoppingOrderService;
 import shopping.order.proto.ShoppingOrderServiceClient;
 
 public class Main {
-  
+
 
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
+  private static ActorRef<Message> subscriber;
+  public static ActorRef<Topic.Command<Message>> adminTopic;
 
-  
+
   public static void main(String[] args) {
-    ActorSystem<Void> system = ActorSystem.create(Behaviors.empty(), "ShoppingCartService");
+//    ActorSystem<Void> system = ActorSystem.create(Behaviors.empty(), "ShoppingCartService");
+//    ActorSystem<SpawnProtocol.Command> system = ActorSystem.create(SpawnProtocol.create(), "ShoppingCartService");
+    ActorSystem<SpawnProtocol.Command> system = ActorSystem.create(Main.create(), "ShoppingCartService");
     try {
       init(system, orderServiceClient(system));
     } catch (Exception e) {
@@ -35,8 +40,24 @@ public class Main {
     }
   }
 
-  public static void init(ActorSystem<Void> system, ShoppingOrderService orderService) {
-    
+  private static Behavior<SpawnProtocol.Command> create() {
+    return Behaviors.setup(ctx -> {
+      adminTopic = ctx.spawn(Topic.create(Message.class, "admin-topic"), "AdminTopic");
+
+      subscriber = ctx.spawn(Behaviors.receive(Message.class).onMessage(Message.class, (msg) -> {
+        System.out.println(msg.text);
+        return Behaviors.same();
+      }).build(), "subscriber");
+
+      adminTopic.tell(Topic.subscribe(subscriber));
+
+      return SpawnProtocol.create();
+    });
+  }
+
+
+  public static void init(ActorSystem<?> system, ShoppingOrderService orderService) {
+
     AkkaManagement.get(system).start();
     ClusterBootstrap.get(system).start();
 
@@ -62,6 +83,9 @@ public class Main {
     int grpcPort = config.getInt("shopping-cart-service.grpc.port");
     ShoppingCartService grpcService = new ShoppingCartServiceImpl(system, itemPopularityRepository);
     ShoppingCartServer.start(grpcInterface, grpcPort, system, grpcService);
+
+
+    adminTopic.tell(Topic.publish(new Message("HELLO ALL, DID YOU GET IT?")));
     
   }
 
